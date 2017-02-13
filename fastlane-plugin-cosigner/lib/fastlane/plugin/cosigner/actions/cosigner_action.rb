@@ -48,16 +48,16 @@ module Fastlane
 
       def self.details
         "
-Fastlane plugin which enables iOS workflows to change the Xcode project's code signing settings before building a target, being a "cosigner" 🖋.
+Fastlane plugin which enables iOS workflows to change the Xcode project's code signing settings before building a target, being a \"cosigner\" 🖋.
 
-This is especially useful to avoid having to configure the Xcode project with a "static" set of code signing configurations for:
+This is especially useful to avoid having to configure the Xcode project with a \"static\" set of code signing configurations for:
 
 • Provisioning Style (Xcode8+): Manual / Automatic
 • Team ID
 • Provisioning Profile UUID (Xcode 7 and earlier) and Name (Xcode8+)
 • Code Signing Identity: iPhone Development / iPhone Distribution
 
-By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being "intrusive".
+By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being \"intrusive\".
 
 Some practical scenarios can be for example:
 
