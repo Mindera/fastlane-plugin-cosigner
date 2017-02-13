@@ -6,21 +6,18 @@ require 'fastlane/plugin/cosigner/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-cosigner'
   spec.version       = Fastlane::Cosigner::VERSION
-  spec.author        = %q{Luís Portela Afonso}
-  spec.email         = %q{luis.afonso@mindera.com}
+  spec.author        = %q{André Pacheco Neves, Luís Portela Afonso}
+  spec.email         = %q{ios@mindera.com}
 
   spec.summary       = %q{A fastlane plugin to help you sign your iOS builds}
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-cosigner"
+  spec.homepage      = "https://github.com/Mindera/fastlane-plugin-cosigner"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  # Don't add a dependency to fastlane or fastlane_re
-  # since this would cause a circular dependency
-
-  # spec.add_dependency 'your-dependency', '~> 1.0.0'
+  spec.add_dependency 'xcodeproj', '~> 1.4.2'
 
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'bundler'
