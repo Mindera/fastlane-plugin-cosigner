@@ -4,35 +4,35 @@ module Fastlane
       def self.run(params)
         require 'xcodeproj'
 
-        project = Xcodeproj::Project.open(options[:xcodeproj_path])
+        project = Xcodeproj::Project.open(params[:xcodeproj_path])
 
-        target = project.targets.select{ |target| target.name == options[:scheme] }.first
+        target = project.targets.select{ |target| target.name == params[:scheme] }.first
         project_atributes = project.root_object.attributes
-        build_settings = target.build_configuration_list[options[:build_configuration]].build_settings
+        build_settings = target.build_configuration_list[params[:build_configuration]].build_settings
 
-        UI.message "Updating Xcode project's ProvisioningStyle to \"#{options[:provisioning_style]}\" 🛠".green
-        project_atributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = options[:provisioning_style]
+        UI.message "Updating Xcode project's ProvisioningStyle to \"#{params[:provisioning_style]}\" 🛠".green
+        project_atributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:provisioning_style]
 
-        UI.message "Updating Xcode project's CODE_SIGN_IDENTITY to \"#{options[:code_sign_identity]}\" 🔑".green
-        build_settings['CODE_SIGN_IDENTITY'] = options[:code_sign_identity]
-        build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = options[:code_sign_identity]
+        UI.message "Updating Xcode project's CODE_SIGN_IDENTITY to \"#{params[:code_sign_identity]}\" 🔑".green
+        build_settings['CODE_SIGN_IDENTITY'] = params[:code_sign_identity]
+        build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = params[:code_sign_identity]
 
-        UI.message "Updating Xcode project's PROVISIONING_PROFILE_SPECIFIER to \"#{options[:profile_name]}\" 🔧".green
-        build_settings['PROVISIONING_PROFILE_SPECIFIER'] = options[:profile_name]
+        UI.message "Updating Xcode project's PROVISIONING_PROFILE_SPECIFIER to \"#{params[:profile_name]}\" 🔧".green
+        build_settings['PROVISIONING_PROFILE_SPECIFIER'] = params[:profile_name]
 
         # This item is set as optional in the configuration values
         # Since Xcode 8, this is no longer needed, you use PROVISIONING_PROFILE_SPECIFIER
-        if options[:profile_uuid]
-            UI.message "Updating Xcode project's PROVISIONING_PROFILE to \"#{options[:profile_uuid]}\" 🔧".green
-            build_settings['PROVISIONING_PROFILE'] = options[:profile_uuid]
+        if params[:profile_uuid]
+            UI.message "Updating Xcode project's PROVISIONING_PROFILE to \"#{params[:profile_uuid]}\" 🔧".green
+            build_settings['PROVISIONING_PROFILE'] = params[:profile_uuid]
         end
 
-        UI.message "Updating Xcode project's DEVELOPMENT_TEAM to \"#{options[:development_team]}\" 👯".green
-        build_settings['DEVELOPMENT_TEAM'] = options[:development_team]
+        UI.message "Updating Xcode project's DEVELOPMENT_TEAM to \"#{params[:development_team]}\" 👯".green
+        build_settings['DEVELOPMENT_TEAM'] = params[:development_team]
 
-        if options[:bundle_identifier]
-            UI.message "Updatind Xcode project's Bundle identifier \"#{options[:bundle_identifier]}\" 🤗".green
-            build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = options[:bundle_identifier]
+        if params[:bundle_identifier]
+            UI.message "Updatind Xcode project's Bundle identifier \"#{params[:bundle_identifier]}\" 🤗".green
+            build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = params[:bundle_identifier]
         end
 
         project.save
