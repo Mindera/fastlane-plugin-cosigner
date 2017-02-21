@@ -3,6 +3,7 @@ module Fastlane
     class CosignerAction < Action
       def self.run(params)
         require 'xcodeproj'
+        require 'colorize'
 
         project = Xcodeproj::Project.open(params[:xcodeproj_path])
 
