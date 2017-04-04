@@ -33,8 +33,8 @@ Some practical scenarios can be for example:
 | `build_configuration` | Build configuration ("Debug", "Release", ...) | `BUILD_CONFIGURATION ` ||
 | `provisioning_style` | Provisioning style ("Automatic", "Manual") (Xcode 8+) | `PROVISIONING_STYLE ` | "Manual" ||
 | `code_sign_identity ` | Code signing identity type ("iPhone Development", "iPhone Distribution") |`CODE_SIGN_IDENTITY ` | "iPhone Distribution" ||
-| `profile_name ` | Provisioning profile name to use for code signing (Xcode 8+) | `PROVISIONING_PROFILE_SPECIFIER ` | "\\"$(PROFILE_NAME)\\"" ||
-| `profile_uuid ` | Provisioning profile UUID to use for code signing (Xcode 7 and earlier)  | `PROVISIONING_PROFILE ` | "\\"$(PROFILE_UUID)\\"" | ✔️ | 
+| `profile_name ` | Provisioning profile name to use for code signing (Xcode 8+) | `PROVISIONING_PROFILE_SPECIFIER ` |||
+| `profile_uuid ` | Provisioning profile UUID to use for code signing (Xcode 7 and earlier)  | `PROVISIONING_PROFILE ` || ✔️ | 
 | `development_team ` | Development team identifier | `TEAM_ID ` |||
 | `bundle_identifier ` | Application Product Bundle Identifier | `APP_IDENTIFIER ` || ✔️ |
 
