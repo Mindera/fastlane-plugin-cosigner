@@ -28,8 +28,10 @@ module Fastlane
             build_settings['PROVISIONING_PROFILE'] = params[:profile_uuid]
         end
 
-        UI.message "Updating Xcode project's DEVELOPMENT_TEAM to \"#{params[:development_team]}\" 👯".green
-        build_settings['DEVELOPMENT_TEAM'] = params[:development_team]
+        if params[:development_team]
+            UI.message "Updating Xcode project's DEVELOPMENT_TEAM to \"#{params[:development_team]}\" 👯".green
+            build_settings['DEVELOPMENT_TEAM'] = params[:development_team]
+        end
 
         if params[:bundle_identifier]
             UI.message "Updatind Xcode project's Bundle identifier \"#{params[:bundle_identifier]}\" 🤗".green
@@ -96,7 +98,7 @@ Xcode project in which two different Apple Developer accounts/teams are required
             FastlaneCore::ConfigItem.new(key: :development_team,
                                          env_name: "TEAM_ID",
                                          description: "Development team identifier",
-                                         default_value: "\"$(PROFILE_UUID)\""),
+                                         optional: true),
             FastlaneCore::ConfigItem.new(key: :bundle_identifier,
                                          env_name: "APP_IDENTIFIER",
                                          description: "Application Product Bundle Identifier",
