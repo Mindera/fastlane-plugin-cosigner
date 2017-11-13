@@ -9,6 +9,7 @@ This action especially useful to avoid having to configure the Xcode project wit
  * Provisioning Style (Xcode8+): Manual / Automatic
  * Team ID
  * Provisioning Profile UUID (Xcode 7 and earlier) and Name (Xcode8+)
+ * Code Siging Style: Manual / Automatic
  * Code Signing Identity: iPhone Development / iPhone Distribution
 
 By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being "intrusive".
@@ -32,7 +33,8 @@ Some practical scenarios can be for example:
 | `scheme` | The Xcode project's scheme | `SCHEME ` || 
 | `build_configuration` | Build configuration ("Debug", "Release", ...) | `BUILD_CONFIGURATION ` ||
 | `provisioning_style` | Provisioning style ("Automatic", "Manual") (Xcode 8+) | `PROVISIONING_STYLE ` | "Manual" ||
-| `code_sign_identity ` | Code signing identity type ("iPhone Development", "iPhone Distribution") |`CODE_SIGN_IDENTITY ` | "iPhone Distribution" ||
+| `code_sign_style` | Code signing style ("Automatic", "Manual") | `CODE_SIGN_STYLE` || ✔️ |
+| `code_sign_identity` | Code signing identity type ("iPhone Development", "iPhone Distribution") |`CODE_SIGN_IDENTITY ` | "iPhone Distribution" ||
 | `profile_name ` | Provisioning profile name to use for code signing (Xcode 8+) | `PROVISIONING_PROFILE_SPECIFIER ` |||
 | `profile_uuid ` | Provisioning profile UUID to use for code signing (Xcode 7 and earlier)  | `PROVISIONING_PROFILE ` || ✔️ | 
 | `development_team ` | Development team identifier | `TEAM_ID ` |||
