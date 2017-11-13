@@ -8,11 +8,16 @@ module Fastlane
         project = Xcodeproj::Project.open(params[:xcodeproj_path])
 
         target = project.targets.select{ |target| target.name == params[:scheme] }.first
-        project_atributes = project.root_object.attributes
+        project_attributes = project.root_object.attributes
         build_settings = target.build_configuration_list[params[:build_configuration]].build_settings
 
         UI.message "Updating Xcode project's ProvisioningStyle to \"#{params[:provisioning_style]}\" 🛠".green
-        project_atributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:provisioning_style]
+        project_attributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:provisioning_style]
+
+        if params[:code_sign_style]
+            UI.message "Updating Xcode project's CODE_SIGN_STYLE to \"#{params[:code_sign_style]}\" 🔑".green
+            build_settings['CODE_SIGN_STYLE'] = params[:code_sign_style]
+        end
 
         UI.message "Updating Xcode project's CODE_SIGN_IDENTITY to \"#{params[:code_sign_identity]}\" 🔑".green
         build_settings['CODE_SIGN_IDENTITY'] = params[:code_sign_identity]
@@ -58,6 +63,7 @@ This is especially useful to avoid having to configure the Xcode project with a 
 • Provisioning Style (Xcode8+): Manual / Automatic
 • Team ID
 • Provisioning Profile UUID (Xcode 7 and earlier) and Name (Xcode8+)
+• Code Signing Style: Manual / Automatic
 • Code Signing Identity: iPhone Development / iPhone Distribution
 
 By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being \"intrusive\".
@@ -83,6 +89,10 @@ Xcode project in which two different Apple Developer accounts/teams are required
                                          env_name: "PROVISIONING_STYLE",
                                          description: "Provisioning style (Automatic, Manual)",
                                          default_value: "Manual"),
+            FastlaneCore::ConfigItem.new(key: :code_sign_style,
+                                         env_name: "CODE_SIGN_STYLE",
+                                         description: "Code signing style (Automatic, Manuale)",
+                                         optional: true),
             FastlaneCore::ConfigItem.new(key: :code_sign_identity,
                                          env_name: "CODE_SIGN_IDENTITY",
                                          description: "Code signing identity type (iPhone Development, iPhone Distribution)",
