@@ -4,12 +4,14 @@ Fastlane plugin which enables iOS workflows to change the Xcode project's code s
 
 ## Why do I need it? 🤔
 
-This action especially useful to avoid having to configure the Xcode project with a "static" set of code signing configurations for:
+This action is especially useful to avoid having to configure the Xcode project with a "static" set of code signing configurations for:
 
- * Provisioning Style (Xcode8+): Manual / Automatic
- * Team ID
- * Provisioning Profile UUID (Xcode 7 and earlier) and Name (Xcode8+)
+ * Code Signing Style (Xcode8+): Manual / Automatic (originally Provisioning Style on Xcode 8)
  * Code Signing Identity: iPhone Development / iPhone Distribution
+ * Provisioning Profile UUID (Xcode 7 and earlier)
+ * Provisioning Profile Name (Xcode8+)
+ * Team ID
+ * Application Bundle identifier
 
 By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being "intrusive".
 
@@ -26,15 +28,15 @@ Some practical scenarios can be for example:
 
 ### Available options 🛠
 
-| Option | Description | Environment Variable | Default | Optional | 
+| Option | Description | Environment Variable | Default | Optional |
 | --- | --- | --- | --- | --- |
 | `xcodeproj_path` | The Xcode project's path | `PROJECT_PATH` ||
-| `scheme` | The Xcode project's scheme | `SCHEME ` || 
+| `scheme` | The Xcode project's scheme | `SCHEME ` ||
 | `build_configuration` | Build configuration ("Debug", "Release", ...) | `BUILD_CONFIGURATION ` ||
-| `provisioning_style` | Provisioning style ("Automatic", "Manual") (Xcode 8+) | `PROVISIONING_STYLE ` | "Manual" ||
+| `code_sign_style` | Code signing style ("Automatic", "Manual ") (Xcode 8+, previously `provisioning_style`)  | `CODE_SIGN_STYLE` (previously `PROVISIONING_STYLE`) | "Manual" ||
 | `code_sign_identity ` | Code signing identity type ("iPhone Development", "iPhone Distribution") |`CODE_SIGN_IDENTITY ` | "iPhone Distribution" ||
 | `profile_name ` | Provisioning profile name to use for code signing (Xcode 8+) | `PROVISIONING_PROFILE_SPECIFIER ` |||
-| `profile_uuid ` | Provisioning profile UUID to use for code signing (Xcode 7 and earlier)  | `PROVISIONING_PROFILE ` || ✔️ | 
+| `profile_uuid ` | Provisioning profile UUID to use for code signing (Xcode 7 and earlier)  | `PROVISIONING_PROFILE ` || ✔️ |
 | `development_team ` | Development team identifier | `TEAM_ID ` |||
 | `bundle_identifier ` | Application Product Bundle Identifier | `APP_IDENTIFIER ` || ✔️ |
 
