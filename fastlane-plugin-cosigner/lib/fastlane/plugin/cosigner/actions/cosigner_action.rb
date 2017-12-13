@@ -8,33 +8,36 @@ module Fastlane
         project = Xcodeproj::Project.open(params[:xcodeproj_path])
 
         target = project.targets.select{ |target| target.name == params[:scheme] }.first
-        project_atributes = project.root_object.attributes
+        project_attributes = project.root_object.attributes
         build_settings = target.build_configuration_list[params[:build_configuration]].build_settings
 
-        UI.message "Updating Xcode project's ProvisioningStyle to \"#{params[:provisioning_style]}\" 🛠".green
-        project_atributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:provisioning_style]
+        # The new `ProvisioningStyle` setting on Xcode 8 apparently was migrated to the `CODE_SIGN_STYLE` build setting
+        # Since we can't know for sure which Xcode version is running, apply both values
+        UI.message "Updating Xcode project's `ProvisioningStyle` (Xcode 8) and `CODE_SIGN_STYLE` (Xcode 9+) to \"#{params[:code_sign_style]}\" 🛠".green
+        project_attributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:code_sign_style]
+        build_settings['CODE_SIGN_STYLE'] = params[:code_sign_identity]
 
-        UI.message "Updating Xcode project's CODE_SIGN_IDENTITY to \"#{params[:code_sign_identity]}\" 🔑".green
+        UI.message "Updating Xcode project's `CODE_SIGN_IDENTITY` to \"#{params[:code_sign_identity]}\" 🔑".green
         build_settings['CODE_SIGN_IDENTITY'] = params[:code_sign_identity]
         build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = params[:code_sign_identity]
 
-        UI.message "Updating Xcode project's PROVISIONING_PROFILE_SPECIFIER to \"#{params[:profile_name]}\" 🔧".green
+        UI.message "Updating Xcode project's `PROVISIONING_PROFILE_SPECIFIER` to \"#{params[:profile_name]}\" 🔧".green
         build_settings['PROVISIONING_PROFILE_SPECIFIER'] = params[:profile_name]
 
         # This item is set as optional in the configuration values
         # Since Xcode 8, this is no longer needed, you use PROVISIONING_PROFILE_SPECIFIER
         if params[:profile_uuid]
-            UI.message "Updating Xcode project's PROVISIONING_PROFILE to \"#{params[:profile_uuid]}\" 🔧".green
+            UI.message "Updating Xcode project's `PROVISIONING_PROFILE` to \"#{params[:profile_uuid]}\" 🔧".green
             build_settings['PROVISIONING_PROFILE'] = params[:profile_uuid]
         end
 
         if params[:development_team]
-            UI.message "Updating Xcode project's DEVELOPMENT_TEAM to \"#{params[:development_team]}\" 👯".green
+            UI.message "Updating Xcode project's `DEVELOPMENT_TEAM` to \"#{params[:development_team]}\" 👯".green
             build_settings['DEVELOPMENT_TEAM'] = params[:development_team]
         end
 
         if params[:bundle_identifier]
-            UI.message "Updatind Xcode project's Bundle identifier \"#{params[:bundle_identifier]}\" 🤗".green
+            UI.message "Updating Xcode project's `PRODUCT_BUNDLE_IDENTIFIER` \"#{params[:bundle_identifier]}\" 🤗".green
             build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = params[:bundle_identifier]
         end
 
@@ -53,18 +56,21 @@ module Fastlane
         "
 Fastlane plugin which enables iOS workflows to change the Xcode project's code signing settings before building a target, being a \"cosigner\" 🖋.
 
-This is especially useful to avoid having to configure the Xcode project with a \"static\" set of code signing configurations for:
+This action is especially useful to avoid having to configure the Xcode project with a \"static\" set of code signing configurations for:
 
-• Provisioning Style (Xcode8+): Manual / Automatic
-• Team ID
-• Provisioning Profile UUID (Xcode 7 and earlier) and Name (Xcode8+)
-• Code Signing Identity: iPhone Development / iPhone Distribution
+ * Code Signing Style (Xcode8+): Manual / Automatic (also called Provisioning Style on Xcode 8)
+ * Code Signing Identity: iPhone Development / iPhone Distribution
+ * Provisioning Profile UUID (Xcode 7 and earlier)
+ * Provisioning Profile Name (Xcode8+)
+ * Team ID
+ * Application Bundle identifier
 
-By being able to configure this before each build (e.g. gym call), it allows having separate sets of code signing configurations on the same project without being \"intrusive\".
+By being able to configure this before each build (e.g. `gym` call), it allows having separate sets of code signing configurations on the same project without being \"intrusive\".
 
 Some practical scenarios can be for example:
 
-Xcode project in which two different Apple Developer accounts/teams are required (e.g. 1 for Development and 1 for Release) shared Xcode project where teams have different code signing configurations (e.g. Automatic vs Manual Provisioning Style)
+ * Xcode project in which two different Apple Developer accounts/teams are required (e.g. 1 for Development and 1 for Release)
+ * Shared Xcode project where teams have different code signing configurations (e.g. Automatic vs Manual Provisioning Style)
         "
       end
 
@@ -79,9 +85,9 @@ Xcode project in which two different Apple Developer accounts/teams are required
             FastlaneCore::ConfigItem.new(key: :build_configuration,
                                          env_name: "BUILD_CONFIGURATION",
                                          description: "Build configuration (Debug, Release, ...)"),
-            FastlaneCore::ConfigItem.new(key: :provisioning_style,
-                                         env_name: "PROVISIONING_STYLE",
-                                         description: "Provisioning style (Automatic, Manual)",
+            FastlaneCore::ConfigItem.new(key: :code_sign_style,
+                                         env_name: "CODE_SIGN_STYLE",
+                                         description: "Code Sign (Provisioning) style (Automatic, Manual)",
                                          default_value: "Manual"),
             FastlaneCore::ConfigItem.new(key: :code_sign_identity,
                                          env_name: "CODE_SIGN_IDENTITY",
