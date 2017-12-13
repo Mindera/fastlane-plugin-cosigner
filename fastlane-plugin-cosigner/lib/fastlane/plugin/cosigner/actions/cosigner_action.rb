@@ -15,7 +15,7 @@ module Fastlane
         # Since we can't know for sure which Xcode version is running, apply both values
         UI.message "Updating Xcode project's `ProvisioningStyle` (Xcode 8) and `CODE_SIGN_STYLE` (Xcode 9+) to \"#{params[:code_sign_style]}\" 🛠".green
         project_attributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:code_sign_style]
-        build_settings['CODE_SIGN_STYLE'] = params[:code_sign_identity]
+        build_settings['CODE_SIGN_STYLE'] = params[:code_sign_style]
 
         UI.message "Updating Xcode project's `CODE_SIGN_IDENTITY` to \"#{params[:code_sign_identity]}\" 🔑".green
         build_settings['CODE_SIGN_IDENTITY'] = params[:code_sign_identity]
