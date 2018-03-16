@@ -14,6 +14,10 @@ module Fastlane
         # The new `ProvisioningStyle` setting on Xcode 8 apparently was migrated to the `CODE_SIGN_STYLE` build setting
         # Since we can't know for sure which Xcode version is running, apply both values
         UI.message "Updating Xcode project's `ProvisioningStyle` (Xcode 8) and `CODE_SIGN_STYLE` (Xcode 9+) to \"#{params[:code_sign_style]}\" 🛠".green
+        if project_attributes['TargetAttributes'] == nil
+          project_attributes['TargetAttributes'] = {}
+          project_attributes['TargetAttributes'][target.uuid] = {}
+        end
         project_attributes['TargetAttributes'][target.uuid]['ProvisioningStyle'] = params[:code_sign_style]
         build_settings['CODE_SIGN_STYLE'] = params[:code_sign_style]
 
