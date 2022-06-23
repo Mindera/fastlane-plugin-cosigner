@@ -2,6 +2,10 @@
 
 Fastlane plugin which enables iOS workflows to change the Xcode project's code signing settings before building a target, being your "cosigner".
 
+## Deprecation notice ⚠️
+
+`cosigner` has long been integrated into fastlane, and as such is considered deprecated and will no longer receive updates. Please use fastlane's [update_code_signing_settings](https://docs.fastlane.tools/actions/update_code_signing_settings/) action instead. 🙏
+
 ## Why do I need it? 🤔
 
 This action is especially useful to avoid having to configure the Xcode project with a "static" set of code signing configurations for:
